@@ -8,19 +8,18 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    env:
-      DOCKER_IMAGE: ${{ vars.DOCKER_USERNAME }}/spring-petclinic
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Validate Docker username
+      - name: Set Docker tag
         run: |
-          if [ -z "${{ vars.DOCKER_USERNAME }}" ]; then
-            echo "Error: DOCKER_USERNAME variable is not set"
-            exit 1
-          fi
-          echo "Docker username: ${{ vars.DOCKER_USERNAME }}"
+          echo "DOCKER_TAG=${{ vars.DOCKER_USERNAME }}/spring-petclinic:latest" >> $GITHUB_ENV
+          echo "Docker tag will be: ${{ vars.DOCKER_USERNAME }}/spring-petclinic:latest"
+
+      - name: Verify Docker tag
+        run: |
+          echo "DOCKER_TAG environment variable: $DOCKER_TAG"
 
       - name: Login to Docker Hub
         uses: docker/login-action@v3
@@ -43,5 +42,4 @@ jobs:
           platforms: linux/amd64,linux/arm64
           push: true
           target: final
-          tags: |
-            ${{ env.DOCKER_IMAGE }}:latest
+          tags: ${{ env.DOCKER_TAG }}
