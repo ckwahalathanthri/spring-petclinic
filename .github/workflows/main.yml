@@ -8,8 +8,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    env:
-      DOCKER_IMAGE: ${{ vars.DOCKER_USERNAME }}/spring-petclinic
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -36,9 +34,6 @@ jobs:
         with:
           target: test
           load: true
-
-      - name: Set Docker tag
-        run: echo "DOCKER_TAG=${{ vars.DOCKER_USERNAME }}/spring-petclinic:latest" >> $GITHUB_ENV
 
       - name: Build and push
         uses: docker/build-push-action@v6
