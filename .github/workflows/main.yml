@@ -9,6 +9,17 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Validate Docker username
+        run: |
+          if [ -z "${{ vars.DOCKER_USERNAME }}" ]; then
+            echo "Error: DOCKER_USERNAME variable is not set"
+            exit 1
+          fi
+          echo "Docker username: ${{ vars.DOCKER_USERNAME }}"
+
       - name: Login to Docker Hub
         uses: docker/login-action@v3
         with:
