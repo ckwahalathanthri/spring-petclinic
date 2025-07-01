@@ -36,10 +36,9 @@ jobs:
           load: true
 
       - name: Build and push
-        run: |
-          docker buildx build \
-            --platform linux/amd64,linux/arm64 \
-            --target final \
-            --tag ${{ vars.DOCKER_USERNAME }}/spring-petclinic:latest \
-            --push \
-            .
+        uses: docker/build-push-action@v6
+        with:
+          platforms: linux/amd64,linux/arm64
+          push: true
+          target: final
+          tags: chinthakaw91/spring-petclinic:latest
